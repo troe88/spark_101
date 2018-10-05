@@ -31,7 +31,7 @@ object Main {
         TrainTask2,
         TrainTask3
       )
-        .par.map(t => Map(
+        .map(t => Map(
         "df : " -> t.byDF(data),
         "ds : " -> t.byDS(data),
         "rdd: " -> t.byRDD(data)
