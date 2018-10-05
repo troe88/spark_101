@@ -1,6 +1,7 @@
 package res
 
 import com.typesafe.config.{Config, ConfigFactory}
+import org.apache.log4j.{LogManager, Logger}
 import org.apache.spark.sql.{Encoders, SparkSession}
 import res.entities.Train
 import res.tasks.{TrainTask1, TrainTask2, TrainTask3}
@@ -14,6 +15,8 @@ object Main {
     .master("local[*]")
     .appName("big data #101")
     .getOrCreate()
+  ss.sparkContext.setLogLevel("WARN")
+  val log: Logger = LogManager.getRootLogger
 
   def main(args: Array[String]): Unit = {
     try {
@@ -37,7 +40,7 @@ object Main {
         "rdd: " -> t.byRDD(data)
       ))
         .map(_.map(m => s"${m._1} = ${m._2.deep.toString()}"))
-        .foreach(_.foreach(println))
+        .foreach(_.foreach(log.warn))
     } finally {
       ss.close()
     }
